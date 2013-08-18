@@ -69,7 +69,8 @@ module Gollum
       end
       
       def author
-        @commit.author
+        author = @commit.author
+        Gollum::Git::Actor.new(author.name, author.email)
       end
       
       def message
@@ -138,6 +139,10 @@ module Gollum
         @git.cat_file(options, sha)
       end
       
+      def refs(options, prefix)
+        @git.refs(options, prefix)
+      end
+      
     end
     
     class Index
@@ -186,13 +191,9 @@ module Gollum
       end
       
       def commit
-        @ref.commit
+        Gollum::Git::Commit.new(@ref.commit)
       end
-      
-      def find_all(repo, options = {})
-        @ref.find_all(repo, options).map{|ref| self.new(ref)}
-      end
-      
+            
     end
     
     class Repo
