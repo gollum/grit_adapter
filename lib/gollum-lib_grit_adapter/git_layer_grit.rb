@@ -235,13 +235,12 @@ module Gollum
       end
       
       # @wiki.repo.head.commit.sha
-      # Grit has Head class somewhere, but where?
       def head
         Gollum::Git::Ref.new(@repo.head)
       end
       
       def index
-        Gollum::Git::Index.new(@repo.index)
+        @index ||= Gollum::Git::Index.new(@repo.index)
       end
       
       def log(commit = 'master', path = nil, options = {})
@@ -255,8 +254,7 @@ module Gollum
       def update_ref(head, commit_sha)
         @repo.update_ref(head, commit_sha)
       end
-
-      
+     
     end
     
     class Tree
@@ -283,6 +281,7 @@ module Gollum
       end
       
       def blobs
+        return Array.new if @tree == {}
         @tree.blobs.map{|blob| Gollum::Git::Blob.new(blob) }
       end
     end
