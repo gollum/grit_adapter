@@ -27,11 +27,24 @@ describe "Common Gollum Git Interface" do
       @blob = @repo.head.commit.tree.blobs.first
     end
   
+    it "should have a create method that returns a Gollum::Git::Blob" do
+      Gollum::Git::Blob.should respond_to(:create).with(2).arguments
+      Gollum::Git::Blob.create(@repo, {}).should be_a Gollum::Git::Blob
+    end
+    
+    it "should have a data method" do
+      @blob.should respond_to(:data)
+    end
+    
+    it "should have a mime-type method" do
+      @blob.should respond_to(:mime_type)
+    end
+    
     it "should have a name" do
       @blob.should respond_to(:name)
     end
   
-    it "should have the extension for symlinks" do
+    it "should have an extension for symlinks" do
       @blob.should respond_to(:is_symlink)
       @blob.should respond_to(:symlink_target).with(1).argument
     end
@@ -59,6 +72,11 @@ describe "Common Gollum Git Interface" do
     it "should return a single Gollum::Git::Tree object for Commit#tree" do
       @commit.tree.should be_a Gollum::Git::Tree
     end
+    
+    it "should have a list_from_string method" do
+      Gollum::Git::Commit.should respond_to(:list_from_string).with(2).arguments
+      pending "Implementation is broken."
+    end
   end
 
   describe Gollum::Git::Git do
@@ -66,6 +84,10 @@ describe "Common Gollum Git Interface" do
       @git = @repo.git
     end
   
+    it "should have an exist? method" do
+      @git.should respond_to(:exist?)
+    end
+    
     it "should have a grep method" do
       @git.should respond_to(:grep)
     end
@@ -89,10 +111,6 @@ describe "Common Gollum Git Interface" do
     
       it "should have an apply_path method" do
         (1..3).each{|i| @git.should respond_to(:apply_patch).with(i).arguments}
-      end
-    
-      it "should have a native method" do
-        @git.should respond_to(:native)
       end
     
       it "should have a cat_file method" do

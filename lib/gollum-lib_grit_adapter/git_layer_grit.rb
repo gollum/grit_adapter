@@ -125,18 +125,26 @@ module Gollum
         @git.ls_files(options, *args, &block)
       end
       
-      def apply_patch(options={}, head_sha=nil, patch=nil)
-        @git.apply_patch(options, head_sha, patch)
+      def ls_tree(options={}, *args, &block)
+        @git.native(:ls_tree, options, *args, &block)
+        #         {:r => true, :l => true, :z => true}, sha)
       end
       
-      # @wiki.repo.git.native "log", options, @wiki.ref, "--", @path
-      def native(cmd, options = {}, *args, &block)
-        @git.native(cmd, options, *args, block)
+      def apply_patch(options={}, head_sha=nil, patch=nil)
+        @git.apply_patch(options, head_sha, patch)
       end
       
       # @repo.git.cat_file({:p => true}, sha)
       def cat_file(options, sha)
         @git.cat_file(options, sha)
+      end
+      
+      def diff(*args)
+        @git.native(:diff, *args)
+      end
+      
+      def log(options = {}, *args, &block)
+        @git.native(:log, options, *args, &block)
       end
       
       def refs(options, prefix)
