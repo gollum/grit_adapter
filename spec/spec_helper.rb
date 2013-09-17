@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'gollum-lib_grit_adapter'
 
 gem_spec = Gem::Specification.find_by_name('gollum_git_adapter_specs')
