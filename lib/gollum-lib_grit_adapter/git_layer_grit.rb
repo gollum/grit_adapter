@@ -175,7 +175,7 @@ module Gollum
       end
       
       def tree
-        @tree ||= Gollum::Git::Tree.new(@index.tree)
+        @index.tree
       end
       
       def read_tree(id)
