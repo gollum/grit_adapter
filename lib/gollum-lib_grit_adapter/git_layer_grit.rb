@@ -32,6 +32,18 @@ module Gollum
         @blob = blob
       end
       
+      def id
+        @blob.id
+      end
+      
+      def mode
+        @blob.mode
+      end
+      
+      def size
+        @blob.size
+      end
+      
       def data
         @blob.data
       end
