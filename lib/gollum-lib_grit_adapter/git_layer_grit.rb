@@ -267,6 +267,10 @@ module Gollum
         @repo.log(commit, path, options)
       end
       
+      def lstree(sha, options = {})
+        @repo.lstree(sha, options)
+      end
+      
       def path
         @repo.path
       end
