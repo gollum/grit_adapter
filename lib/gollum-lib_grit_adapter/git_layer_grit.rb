@@ -151,10 +151,6 @@ module Gollum
         @git.cat_file(options, sha)
       end
       
-      def diff(*args)
-        @git.native(:diff, *args)
-      end
-      
       def log(options = {}, *args, &block)
         @git.native(:log, options, *args, &block)
       end
@@ -261,6 +257,10 @@ module Gollum
       
       def index
         @index ||= Gollum::Git::Index.new(@repo.index)
+      end
+
+      def diff(sha1, sha2, path)
+        @repo.diff(sha1, sha2, path)
       end
       
       def log(commit = 'master', path = nil, options = {})
