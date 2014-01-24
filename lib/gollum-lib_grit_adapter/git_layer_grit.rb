@@ -151,8 +151,12 @@ module Gollum
         @git.cat_file(options, sha)
       end
       
-      def log(options = {}, *args, &block)
-        @git.native(:log, options, *args, &block)
+      def versions_for_path(path = nil, ref = nil, options = nil)
+        log(path, ref, options)
+      end
+
+      def log(path = nil, ref = nil, options = nil)
+        @git.native(:log, options)
       end
       
       def refs(options, prefix)
