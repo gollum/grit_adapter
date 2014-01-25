@@ -152,15 +152,27 @@ module Gollum
       end
       
       def versions_for_path(path = nil, ref = nil, options = nil)
-        log(path, ref, options)
+        if options[:follow]
+          options[:pretty] = 'raw'
+          options.delete :max_count
+          options.delete :skip
+          logstr = log(path, ref, options)
+          Gollum::Git::Commit.list_from_string(repo, logstr)
+        else
+          repo.log(ref, path, options).map {|grit_commit| Gollum::Git::Commit.new(grit_commit)}
+        end
       end
 
-      def log(path = nil, ref = nil, options = nil)
-        @git.native(:log, options)
+      def log(path = nil, ref = nil, options = nil, *args)
+        @git.native(:log, options, "--", path)
       end
       
       def refs(options, prefix)
         @git.refs(options, prefix)
+      end
+
+      def repo
+        @repo ||= Grit::Repo.new(@git.git_dir)
       end
       
     end
@@ -263,7 +275,7 @@ module Gollum
         @index ||= Gollum::Git::Index.new(@repo.index)
       end
 
-      def diff(sha1, sha2, path)
+      def diff(sha1, sha2, path = nil)
         @repo.diff(sha1, sha2, path)
       end
       
