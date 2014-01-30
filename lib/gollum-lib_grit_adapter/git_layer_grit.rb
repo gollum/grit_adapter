@@ -113,8 +113,15 @@ module Gollum
         @git.exist?
       end
       
-      def grep(options={}, *args, &block)
-        @git.grep(options, *args, &block)
+      def grep(query, options={})
+        ref = options[:ref] ? options[:ref] : "HEAD"
+        args = [{}, '-i', '-c', query, ref, '--']
+        args << '--' << options[:path] if options[:path]
+        result = @git.grep(*args).split("\n")
+        result.map do |line|
+          line = line.split(":")
+          {:name => line[1], :count => line[2]}
+        end
       end
       
       # git.rm({'f' => true}, '--', path)
@@ -133,8 +140,9 @@ module Gollum
         raise Gollum::Git::NoSuchShaFound
       end
       
-      def ls_files(options={}, *args, &block)
-        @git.ls_files(options, *args, &block)
+      def ls_files(query, options = {})
+        options[:ref] = options[:ref] ? options[:ref] : "HEAD"
+        @git.ls_files({}, "*#{query}*").split("\n")
       end
       
       def ls_tree(options={}, *args, &block)
