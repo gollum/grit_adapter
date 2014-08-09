@@ -125,13 +125,14 @@ module Gollum
       end
       
       # git.rm({'f' => true}, '--', path)
-      def rm(options={}, *args, &block)
-        @git.rm(options, *args, &block)
+      def rm(path, options = {}, &block)
+        options['f'] = true if options[:force]
+        @git.rm(options, '--', path, &block)
       end
       
       # git.checkout({}, 'HEAD', '--', path)
-      def checkout(options={}, *args, &block)
-        @git.checkout(options, *args, &block)
+      def checkout(path, ref, options = {}, &block)
+        @git.checkout(options, ref, '--', path, &block)
       end
       
       def rev_list(options, *refs)
@@ -239,7 +240,13 @@ module Gollum
     class Repo
       
       def initialize(path, options)
-        @repo = Grit::Repo.new(path, options)
+        begin
+          @repo = Grit::Repo.new(path, options)
+        rescue Grit::InvalidGitRepositoryError
+          raise Gollum::InvalidGitRepositoryError
+        rescue Grit::NoSuchPathError
+          raise Gollum::NoSuchPathError
+        end
       end
       
       def self.init(path, git_options = {}, repo_options = {})
