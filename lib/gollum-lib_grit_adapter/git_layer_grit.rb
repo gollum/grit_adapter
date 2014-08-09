@@ -3,6 +3,15 @@
 require 'grit'
 
 module Gollum
+
+  def self.set_git_timeout(time)
+    Grit::Git.git_timeout = time
+  end
+
+  def self.set_git_max_filesize(size)
+    Grit::Git.git_max_size = size
+  end
+
   module Git
     
     class Actor
