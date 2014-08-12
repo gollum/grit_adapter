@@ -94,6 +94,10 @@ module Gollum
         Gollum::Git::Actor.new(author.name, author.email)
       end
       
+      def authored_date
+        @commit.authored_date
+      end
+      
       def message
         @commit.message
       end
