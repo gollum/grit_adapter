@@ -1,14 +1,14 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "gollum-lib_grit_adapter/version"
+require "grit_adapter/version"
 
 Gem::Specification.new do |s|
-  s.name        = "gollum-lib_grit_adapter"
+  s.name        = "grit_adapter"
   s.version     = Gollum::Lib::Git::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Bart Kamphorst, Dawa Ometto"]
   s.email       = ["repotag-dev@googlegroups.com"]
-  s.homepage    = "https://github.com/repotag/gollum-lib_grit_adapter"
+  s.homepage    = "https://github.com/gollum/grit_adapter"
   s.summary     = %q{Adapter for Gollum to use Grit at the backend.}
   s.description = %q{Adapter for Gollum to use Grit at the backend.}
 
