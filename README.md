@@ -3,7 +3,7 @@
 
 ## DESCRIPTION
 
-Adapter for Gollum to use Grit at the backend.
+Adapter for [gollum](https://github.com/gollum/gollum) to use Grit at the backend.
 
 ## CONTRIBUTING
 
