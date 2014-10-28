@@ -12,6 +12,6 @@ Make sure the [git adapter specs](https://github.com/gollum/adapter_specs) pass 
 2. Change gollum-lib's Gemfile so as to use your local version of this adapter, i.e.:
 ```diff
 -gem 'gollum-grit_adapter'
-+gem 'gollum-grit_adapter', :path => "/Users/dawa/Code/gollum-lib_grit_adapter"
++gem 'gollum-grit_adapter', :path => "/path/to/your/gollum-lib_grit_adapter"
 ```
 3. Run the gollum-lib specs and see if they pass.
