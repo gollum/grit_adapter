@@ -132,8 +132,9 @@ module Gollum
         args << '--' << options[:path] if options[:path]
         result = @git.grep(*args).split("\n")
         result.map do |line|
-          line = line.split(":")
-          {:name => line[1], :count => line[2]}
+          branch_and_name, _, count = line.rpartition(":")
+          branch, _, name = branch_and_name.partition(':')
+          {:name => name, :count => count}
         end
       end
       
