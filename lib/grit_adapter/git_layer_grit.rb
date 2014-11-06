@@ -194,6 +194,8 @@ module Gollum
         end
       end
 
+      private
+
       def log(path = nil, ref = nil, options = nil, *args)
         @git.native(:log, options, "--", path)
       end
