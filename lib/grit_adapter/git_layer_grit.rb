@@ -173,8 +173,8 @@ module Gollum
         #         {:r => true, :l => true, :z => true}, sha)
       end
       
-      def apply_patch(options={}, head_sha=nil, patch=nil)
-        @git.apply_patch(options, head_sha, patch)
+      def apply_patch(head_sha=nil, patch=nil)
+        @git.apply_patch({}, head_sha, patch)
       end
       
       # @repo.git.cat_file({:p => true}, sha)
