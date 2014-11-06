@@ -1,6 +1,7 @@
 # ~*~ encoding: utf-8 ~*~
 
 require 'grit'
+require 'ostruct'
 
 module Gollum
 
@@ -87,6 +88,13 @@ module Gollum
       
       def to_s
         @commit.id
+      end
+
+      def stats
+        @stats ||= begin
+          grit_stats = @commit.stats
+          OpenStruct.new(:additions => grit_stats.additions, :deletions => grit_stats.deletions, :files => grit_stats.files, :id => id, :total => grit_stats.total)
+        end
       end
       
       def author
@@ -309,7 +317,7 @@ module Gollum
       end
       
       def log(commit = 'master', path = nil, options = {})
-        @repo.log(commit, path, options)
+        @repo.log(commit, path, options).map {|grit_commit| Gollum::Git::Commit.new(grit_commit)}
       end
       
       def lstree(sha, options = {})
