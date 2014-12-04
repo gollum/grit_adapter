@@ -136,6 +136,8 @@ module Gollum
       
       def grep(query, options={})
         ref = options[:ref] ? options[:ref] : "HEAD"
+        query = Shellwords.split(query).select {|q| !(q =~ /^(-O)|(--open-files-in-pager)/) }
+        query = Shellwords.join(query)
         args = [{}, '-I', '-i', '-c', query, ref, '--']
         args << options[:path] if options[:path]
         result = @git.grep(*args).split("\n")
@@ -165,6 +167,7 @@ module Gollum
       
       def ls_files(query, options = {})
         options[:ref] = options[:ref] ? options[:ref] : "HEAD"
+        query = Shellwords.shellescape(query)
         @git.ls_files({}, "*#{query}*").split("\n")
       end
       
