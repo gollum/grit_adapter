@@ -2,6 +2,7 @@
 
 require 'grit'
 require 'ostruct'
+require 'shellwords'
 
 module Gollum
 
@@ -166,14 +167,19 @@ module Gollum
       end
       
       def ls_files(query, options = {})
-        options[:ref] = options[:ref] ? options[:ref] : "HEAD"
+        ref = options[:ref] ? options[:ref] : "HEAD"
+        path = options.delete(:path) || "."
+        options.delete(:ref)
         query = Shellwords.shellescape(query)
-        @git.ls_files({}, "*#{query}*").split("\n")
+        if @git.work_tree && !@git.work_tree.empty? then
+          @git.ls_files({}, ref, ::File.join(path, "*#{query}*")).split("\n")
+        else
+          ls_tree({:full_tree => true, :r => true, :name_only => true}, ref, path).split("\n").select {|line| line.match(/#{Regexp.escape(query)}/i)}
+        end
       end
       
       def ls_tree(options={}, *args, &block)
         @git.native(:ls_tree, options, *args, &block)
-        #         {:r => true, :l => true, :z => true}, sha)
       end
       
       def apply_patch(head_sha=nil, patch=nil)
