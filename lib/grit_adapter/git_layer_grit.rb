@@ -203,6 +203,14 @@ module Gollum
         end
       end
 
+      def push(*args)
+        @git.push(args)
+      end
+
+      def pull(*args)
+        @git.pull(args)
+      end
+
       private
 
       def log(path = nil, ref = nil, options = nil, *args)
