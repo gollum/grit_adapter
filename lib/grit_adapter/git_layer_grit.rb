@@ -365,7 +365,15 @@ module Gollum
       
       # if index.current_tree && tree = index.current_tree / (@wiki.page_file_dir || '/')
       def /(file)
-        @tree.send(:/, file) 
+        result = @tree.send(:/, file)
+        case result
+        when Grit::Blob
+          return Gollum::Git::Blob.new(result)
+        when Grit::Tree
+          return Gollum::Git::Tree.new(result)
+        else
+          nil
+        end
       end
       
       def blobs
