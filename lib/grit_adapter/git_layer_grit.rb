@@ -137,6 +137,7 @@ module Gollum
       
       def grep(query, options={})
         ref = options[:ref] ? options[:ref] : "HEAD"
+        query = Shellwords.shellescape(query)
         query = Shellwords.split(query).select {|q| !(q =~ /^(-O)|(--open-files-in-pager)/) }
         query = Shellwords.join(query)
         args = [{}, '-I', '-i', '-c', query, ref, '--']
