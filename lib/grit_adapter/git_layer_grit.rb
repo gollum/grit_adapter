@@ -204,6 +204,14 @@ module Gollum
         end
       end
 
+      def push(remote, branch, options = {})
+        @git.push(options, remote, branch)
+      end
+
+      def pull(remote, branch, options = {})
+        @git.pull(options, remote, branch)
+      end
+
       private
 
       def log(path = nil, ref = nil, options = nil, *args)
