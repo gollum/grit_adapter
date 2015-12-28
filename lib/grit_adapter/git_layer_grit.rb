@@ -170,7 +170,7 @@ module Gollum
       def revert(path, sha1, sha2, ref)
         patch = path ?
           repo.diff(sha2, sha1, path).first.diff : repo.diff(sha2, sha1).map { |d| d.diff }.join("\n")
-        apply_patch(ref, patch)
+        @git.apply_patch({}, ref, patch)
       end
       
       def ls_files(query, options = {})
@@ -226,10 +226,6 @@ module Gollum
 
       def repo
         @repo ||= Grit::Repo.new(@git.git_dir)
-      end
-
-      def apply_patch(ref, patch=nil)
-        @git.apply_patch({}, ref, patch)
       end
       
     end
