@@ -127,8 +127,9 @@ module Gollum
     # method signatures.
     class Git
     
-      def initialize(git)
+      def initialize(git, repo_bare = false)
         @git = git
+        @repo_bare = repo_bare
       end
       
       def exist?
@@ -223,7 +224,7 @@ module Gollum
       end
 
       def repo
-        @repo ||= Grit::Repo.new(@git.git_dir)
+        @repo ||= Grit::Repo.new(@git.git_dir, {:is_bare => @repo_bare})
       end
       
     end
@@ -310,7 +311,7 @@ module Gollum
       end
       
       def git
-        @git ||= Gollum::Git::Git.new(@repo.git)
+        @git ||= Gollum::Git::Git.new(@repo.git, bare)
       end
       
       def commit(id)
