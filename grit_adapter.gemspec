@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description = %q{Adapter for Gollum to use Grit at the backend.}
   s.license	= "MIT"
 
-  s.add_runtime_dependency 'gitlab-grit', '~> 2.7', '>= 2.7.1'
+  s.add_runtime_dependency 'gitlab-grit', '>= 2.7.1'
   s.add_development_dependency "rspec", "3.4.0"
 
   s.files         = Dir['lib/**/*.rb'] + ["README.md", "Gemfile"]
