@@ -135,6 +135,21 @@ module Gollum
       def exist?
         @git.exist?
       end
+
+      def verbose_grep(query, options={})
+        ref = options[:ref] ? options[:ref] : "HEAD"
+        query = Shellwords.shellescape(query)
+        query = Shellwords.split(query).select {|q| !(q =~ /^(-O)|(--open-files-in-pager)/) }
+        query = Shellwords.join(query)
+        args = [{}, '-I', '-i', query, ref, '--']
+        args << options[:path] if options[:path]
+        result = @git.native(:grep, *args).split("\n")
+        result.map do |line|
+          branch_and_name, _, count = line.rpartition(":")
+          branch, _, name = branch_and_name.partition(':')
+          {:name => name, :count => count}
+        end
+      end
       
       def grep(query, options={})
         ref = options[:ref] ? options[:ref] : "HEAD"
